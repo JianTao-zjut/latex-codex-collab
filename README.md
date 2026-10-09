@@ -2,6 +2,10 @@
 
 # LaTeX Codex Collab
 
+> [!WARNING]
+> **Collaboration data security notice: this program currently provides no guarantee of data security during collaboration.**
+> Collaborators are assumed to be trusted labmates or research partners. The program is not designed to securely isolate mutually untrusted users. Project file permission checks are not operating-system isolation, and local TeX compilation does not provide a security sandbox. Invite only people you trust, keep sensitive or confidential data out of shared projects, and do not use this program as a public collaboration service for strangers.
+
 Edit LaTeX and Markdown beside your Codex conversation, with local PDF compilation, individual collaborator invitations and Chinese reading translation. This modified edition is based on LaTeX Codex.
 
 ## Features
