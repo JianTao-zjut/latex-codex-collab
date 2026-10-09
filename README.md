@@ -34,6 +34,51 @@ See the [installation and launch guide](docs/INSTALL.md) for manual startup, col
 
 Collaboration is for trusted coauthors: the web APIs restrict project files, but local TeX compilation is not an operating-system sandbox. Installation, launch options and maintenance details are in [AGENTS.md](AGENTS.md).
 
+## Short demos
+
+Recorded UI steps with fictional documents and test collaborators, with English/Chinese captions. The AI suggestion and Chinese translation are real results; playback pauses briefly at each step.
+
+<details><summary>Live preview and search</summary>
+
+![Live preview and search](docs/media/collab-01-live-preview.gif)
+
+</details>
+<details><summary>Collaborators and owner-controlled Codex permission</summary>
+
+![Collaboration permissions](docs/media/collab-02-collaboration.gif)
+
+</details>
+<details><summary>Comments, replies and resolved discussions</summary>
+
+![Shared comments](docs/media/collab-03-comments.gif)
+
+</details>
+<details><summary>Project file browsing and creation</summary>
+
+![Project files](docs/media/collab-04-project-files.gif)
+
+</details>
+<details><summary>Markdown to local PDF</summary>
+
+![Local PDF](docs/media/collab-05-pdf.gif)
+
+</details>
+<details><summary>AI annotations, Send and Keep/Undo</summary>
+
+![AI annotations](docs/media/collab-06-ai-annotations.gif)
+
+</details>
+<details><summary>Optional Chinese translation and cache reuse</summary>
+
+![Chinese translation](docs/media/collab-07-translation.gif)
+
+</details>
+<details><summary>Source history, authors and saved AI requests</summary>
+
+![Project history](docs/media/collab-08-history.gif)
+
+</details>
+
 ## Origin and acknowledgments
 
 This plugin is a modified derivative of [Fr0zenWatter/codex-latex-editor](https://github.com/Fr0zenWatter/codex-latex-editor/tree/main). Thank you to **Fr0zenWatter** and the original contributors for the foundation, and to the authors of bundled third-party libraries. Existing resource licenses are retained. This edition is not an official release or endorsement by the original author.

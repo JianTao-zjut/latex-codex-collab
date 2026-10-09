@@ -1,7 +1,15 @@
 # Local papers, experiments and shared archives
 /experiments/
 /share/
-/docs/media/
+/docs/media/*
+!/docs/media/collab-01-live-preview.gif
+!/docs/media/collab-02-collaboration.gif
+!/docs/media/collab-03-comments.gif
+!/docs/media/collab-04-project-files.gif
+!/docs/media/collab-05-pdf.gif
+!/docs/media/collab-06-ai-annotations.gif
+!/docs/media/collab-07-translation.gif
+!/docs/media/collab-08-history.gif
 /Design/assets/
 
 # Credentials and document history

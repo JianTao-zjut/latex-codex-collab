@@ -1,4 +1,4 @@
-"""Build a source-only release; no documents, runtime data or demo media."""
+"""Build a source release with curated fictional demos, excluding private data."""
 import argparse
 from pathlib import Path
 import zipfile
@@ -7,7 +7,11 @@ PRIVATE_DIRS = {'.git', '.latex-codex', 'node_modules', '__pycache__', 'experime
 PRIVATE_NAMES = {'auth.json', 'projects.json', 'autodl.txt'}
 PRIVATE_SUFFIXES = {'.tex', '.pdf', '.sqlite3', '.db', '.zip', '.log', '.pem', '.key', '.mp4', '.webm'}
 ROOT_FILES = ('README.md', 'README.zh-CN.md', 'AGENTS.md', 'CHANGELOG.md', '.gitignore', '.agents/plugins/marketplace.json',
-              'docs/FEATURES.md', 'docs/FEATURES.zh-CN.md', 'docs/INSTALL.md', 'docs/INSTALL.zh-CN.md')
+              'docs/FEATURES.md', 'docs/FEATURES.zh-CN.md', 'docs/INSTALL.md', 'docs/INSTALL.zh-CN.md',
+              'docs/media/collab-01-live-preview.gif', 'docs/media/collab-02-collaboration.gif',
+              'docs/media/collab-03-comments.gif', 'docs/media/collab-04-project-files.gif',
+              'docs/media/collab-05-pdf.gif', 'docs/media/collab-06-ai-annotations.gif',
+              'docs/media/collab-07-translation.gif', 'docs/media/collab-08-history.gif')
 
 
 def release_files(root):
