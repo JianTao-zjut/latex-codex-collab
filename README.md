@@ -28,7 +28,46 @@ Edit LaTeX and Markdown beside your Codex conversation, with local PDF compilati
 
 Read the [complete feature guide](docs/FEATURES.md), including permission boundaries, limitations and unresolved checks.
 
-## Short demos
+## Original features and demos — developed by Fr0zenWatter
+
+> [!IMPORTANT]
+> **The foundational features and recordings in this section were developed and produced by [Fr0zenWatter](https://github.com/Fr0zenWatter/codex-latex-editor), the original author. They are not original contributions of this modified edition.** GIFs are embedded from the author's public repository; click to watch the original full videos. Recordings show the original interface, which may differ from this edition.
+
+### Original author's feature: main-chat annotations
+
+Collect source annotations for the Codex conversation.
+
+[![Main-chat annotations — original recording by Fr0zenWatter](https://raw.githubusercontent.com/Fr0zenWatter/codex-latex-editor/main/docs/media/04-native-comments.gif)](https://github.com/Fr0zenWatter/codex-latex-editor/blob/main/docs/media/04-native-comments.mp4)
+
+### Original author's feature: PDF selection and temporary AI proofreading
+
+Select text or formulas and review suggestions with Keep/Undo.
+
+[![PDF annotations — original recording by Fr0zenWatter](https://raw.githubusercontent.com/Fr0zenWatter/codex-latex-editor/main/docs/media/03-pdf-comments.gif)](https://github.com/Fr0zenWatter/codex-latex-editor/blob/main/docs/media/03-pdf-comments.mp4)
+
+### Original author's feature: LaTeX ↔ PDF navigation
+
+Navigate between source and PDF, chapters, pan and zoom.
+
+[![Navigation — original recording by Fr0zenWatter](https://raw.githubusercontent.com/Fr0zenWatter/codex-latex-editor/main/docs/media/01-navigation.gif)](https://github.com/Fr0zenWatter/codex-latex-editor/blob/main/docs/media/01-navigation.mp4)
+
+### Original author's feature: local history
+
+Compare source/PDF revisions and restore earlier versions.
+
+[![History — original recording by Fr0zenWatter](https://raw.githubusercontent.com/Fr0zenWatter/codex-latex-editor/main/docs/media/02-history.gif)](https://github.com/Fr0zenWatter/codex-latex-editor/blob/main/docs/media/02-history.mp4)
+
+### Original author's feature: Markdown and local PDF compilation
+
+Preview notes and compile tables, equations and TikZ locally.
+
+[![Markdown — original recording by Fr0zenWatter](https://raw.githubusercontent.com/Fr0zenWatter/codex-latex-editor/main/docs/media/05-markdown.gif)](https://github.com/Fr0zenWatter/codex-latex-editor/blob/main/docs/media/05-markdown.mp4)
+
+**Other original foundations:** Standard/Vim/Emacs editing, highlighting, completion, formula previews, languages, themes, model/reasoning controls, styles and project chat. See the [original README](https://github.com/Fr0zenWatter/codex-latex-editor/blob/main/README.md).
+
+## Demos of this edition's additions and extensions
+
+This edition primarily adds collaborator invitations and permissions, shared discussions, project file management, a unified multi-project gateway and incremental Chinese translation. Our recordings below also demonstrate inherited capabilities; the feature attribution above still applies.
 
 Recorded UI steps with fictional documents and test collaborators, with English/Chinese captions. The AI suggestion and Chinese translation are real results; playback pauses briefly at each step.
 

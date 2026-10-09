@@ -28,7 +28,46 @@
 
 完整操作、权限边界、限制及尚未通过的检查见 [功能说明](docs/FEATURES.zh-CN.md)。
 
-## 简短功能演示
+## 原版功能与演示 — 原作者 Fr0zenWatter 开发
+
+> [!IMPORTANT]
+> **本节基础功能及演示由原作者 [Fr0zenWatter](https://github.com/Fr0zenWatter/codex-latex-editor) 开发与制作，并非本改造版的原创贡献。** 下列 GIF 直接引用原作者已公开的仓库，点击可查看原版完整视频。画面对应原版界面，本改造版可能有所不同。
+
+### 原作者功能：主对话原生批注
+
+选取源码、保存批注要求，再交给 Codex 主对话处理。
+
+[![原作者 Fr0zenWatter 制作：主对话批注演示](https://raw.githubusercontent.com/Fr0zenWatter/codex-latex-editor/main/docs/media/04-native-comments.gif)](https://github.com/Fr0zenWatter/codex-latex-editor/blob/main/docs/media/04-native-comments.mp4)
+
+### 原作者功能：PDF 选区与临时 AI 批注校对
+
+正文选字、公式框选、局部 AI 修改，以及源码和临时 PDF 中逐处 Keep/Undo。
+
+[![原作者 Fr0zenWatter 制作：PDF 批注演示](https://raw.githubusercontent.com/Fr0zenWatter/codex-latex-editor/main/docs/media/03-pdf-comments.gif)](https://github.com/Fr0zenWatter/codex-latex-editor/blob/main/docs/media/03-pdf-comments.mp4)
+
+### 原作者功能：LaTeX 与 PDF 双向导航
+
+源码与 PDF 互相定位，章节导航、页面拖动与缩放。
+
+[![原作者 Fr0zenWatter 制作：双向导航演示](https://raw.githubusercontent.com/Fr0zenWatter/codex-latex-editor/main/docs/media/01-navigation.gif)](https://github.com/Fr0zenWatter/codex-latex-editor/blob/main/docs/media/01-navigation.mp4)
+
+### 原作者功能：本地版本历史
+
+自动保存、源码与 PDF 差异比较，以及旧版本恢复。
+
+[![原作者 Fr0zenWatter 制作：版本历史演示](https://raw.githubusercontent.com/Fr0zenWatter/codex-latex-editor/main/docs/media/02-history.gif)](https://github.com/Fr0zenWatter/codex-latex-editor/blob/main/docs/media/02-history.mp4)
+
+### 原作者功能：Markdown 与本地 PDF 编译
+
+Markdown 实时预览、本地 TeX 编译，以及表格、公式和 TikZ 支持。
+
+[![原作者 Fr0zenWatter 制作：Markdown 演示](https://raw.githubusercontent.com/Fr0zenWatter/codex-latex-editor/main/docs/media/05-markdown.gif)](https://github.com/Fr0zenWatter/codex-latex-editor/blob/main/docs/media/05-markdown.mp4)
+
+**原作者的其他基础能力：** Standard/Vim/Emacs 编辑、语法高亮、命令补全、公式预览、多语言界面、内置及自定义主题、模型与思考等级、写作风格和项目聊天。完整介绍见[原版中文 README](https://github.com/Fr0zenWatter/codex-latex-editor/blob/main/README.zh-CN.md)。
+
+## 本改造版新增与扩展功能演示
+
+本版主要新增协作邀请与权限、共享文字讨论、项目文件管理、统一多项目入口和中文增量翻译；下面也包含继承自原版能力的使用演示，录制由本改造版完成，功能归属以上节说明为准。
 
 以下 GIF 使用虚构文档和测试成员实录，附中英文字幕。AI 修改建议与中文翻译均为实际运行结果；每个操作步骤稍作停留，方便阅读。
 
