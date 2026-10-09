@@ -62,7 +62,9 @@
 ![AI 批注](docs/media/collab-06-ai-annotations.gif)
 
 
-### 可选中文翻译与缓存复用
+### 中文翻译与长文同步滚动
+
+六节长文实录：英文向下、向上滚动时中文自动跟随；关闭跟随后译文停留，重新开启后对齐当前原文位置。演示约 24 秒，译文为实际生成结果。
 
 ![中文翻译](docs/media/collab-07-translation.gif)
 

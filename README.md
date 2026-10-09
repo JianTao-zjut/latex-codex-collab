@@ -62,7 +62,9 @@ Recorded UI steps with fictional documents and test collaborators, with English/
 ![AI annotations](docs/media/collab-06-ai-annotations.gif)
 
 
-### Optional Chinese translation and cache reuse
+### Chinese translation and synchronized scrolling through a longer document
+
+A six-section document demonstrates Chinese following English scrolling down and back up, staying in place when following is disabled, and realigning when enabled again. Approximately 24 seconds, with actual generated translations.
 
 ![Chinese translation](docs/media/collab-07-translation.gif)
 
