@@ -28,6 +28,49 @@
 
 完整操作、权限边界、限制及尚未通过的检查见 [功能说明](docs/FEATURES.zh-CN.md)。
 
+## 简短功能演示
+
+以下 GIF 使用虚构文档和测试成员实录，附中英文字幕。AI 修改建议与中文翻译均为实际运行结果；每个操作步骤稍作停留，方便阅读。
+
+### 实时预览与搜索
+
+![实时预览与搜索](docs/media/collab-01-live-preview.gif)
+
+
+### 协作成员与所有者分配 Codex 权限
+
+![协作权限](docs/media/collab-02-collaboration.gif)
+
+
+### 文字注释、回复与解决讨论
+
+![共享注释](docs/media/collab-03-comments.gif)
+
+
+### 浏览与新建项目文件
+
+![项目文件](docs/media/collab-04-project-files.gif)
+
+
+### Markdown 本地编译 PDF
+
+![本地 PDF](docs/media/collab-05-pdf.gif)
+
+
+### AI 批注、Send 与逐处 Keep/Undo
+
+![AI 批注](docs/media/collab-06-ai-annotations.gif)
+
+
+### 可选中文翻译与缓存复用
+
+![中文翻译](docs/media/collab-07-translation.gif)
+
+
+### 源码历史、作者与已保存的 AI 修改要求
+
+![项目历史](docs/media/collab-08-history.gif)
+
 ## 最短用法
 
 1. 下载或克隆本仓库，在 Codex 中打开仓库文件夹。
@@ -37,51 +80,6 @@
 独立启动、协作及公网穿透见 [安装与启动指南](docs/INSTALL.zh-CN.md)。安装后的插件名称仍为 `latex-codex`。
 
 协作面向可信合作者：网页接口限制项目文件范围，但本地 TeX 编译不是操作系统沙箱。安装、启动选项和维护说明见 [AGENTS.md](AGENTS.md)。
-
-## 简短功能演示
-
-以下 GIF 使用虚构文档和测试成员实录，附中英文字幕。AI 修改建议与中文翻译均为实际运行结果；每个操作步骤稍作停留，方便阅读。
-
-<details><summary>实时预览与搜索</summary>
-
-![实时预览与搜索](docs/media/collab-01-live-preview.gif)
-
-</details>
-<details><summary>协作成员与所有者分配 Codex 权限</summary>
-
-![协作权限](docs/media/collab-02-collaboration.gif)
-
-</details>
-<details><summary>文字注释、回复与解决讨论</summary>
-
-![共享注释](docs/media/collab-03-comments.gif)
-
-</details>
-<details><summary>浏览与新建项目文件</summary>
-
-![项目文件](docs/media/collab-04-project-files.gif)
-
-</details>
-<details><summary>Markdown 本地编译 PDF</summary>
-
-![本地 PDF](docs/media/collab-05-pdf.gif)
-
-</details>
-<details><summary>AI 批注、Send 与逐处 Keep/Undo</summary>
-
-![AI 批注](docs/media/collab-06-ai-annotations.gif)
-
-</details>
-<details><summary>可选中文翻译与缓存复用</summary>
-
-![中文翻译](docs/media/collab-07-translation.gif)
-
-</details>
-<details><summary>源码历史、作者与已保存的 AI 修改要求</summary>
-
-![项目历史](docs/media/collab-08-history.gif)
-
-</details>
 
 ## 来源与致谢
 
