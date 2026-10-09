@@ -1,0 +1,148 @@
+# 项目约定
+
+- README 写给使用者：只保留简短介绍、主要功能和最短用法。环境、安装命令和维护细节放在本文件。
+- 插件源码在 `plugins/latex-codex/`，市场配置在 `.agents/plugins/marketplace.json`。修改仓库源码，不直接修改已安装的缓存副本。
+- 不提交论文、实验备份、分享压缩包、文档历史数据库或凭据。
+
+## LaTeX 默认打开方式
+
+- 用户已指定本项目使用 LaTeX Codex。创建或修改 `.tex` 文稿后，默认按 `plugins/latex-codex/skills/latex-codex/SKILL.md` 的流程，在 Codex 右侧浏览器面板打开该文稿，使用本地 TeX 编译；用户明确要求内置编辑器时再使用内置编辑器。
+- 同一文稿已有本对话启动的服务时复用，外部源码修改由编辑器正常同步；有未保存编辑或冲突时不得直接覆盖。切换文稿遵循插件的文件打开流程。
+- 此约定控制代理的打开和编译流程，不替换应用自带的 `.tex` 文件预览入口。不要为此调用 `open_in_codex` 的文件目标或 `compile_latex_document`，应打开插件服务的浏览器 URL；不要修改应用内部文件或全局设置。
+
+## 安装
+
+先检查已登录的 Codex 桌面应用与 CLI、Python 3.10+、本地 TeX Live / MiKTeX / MacTeX。TeX 环境需提供 `xelatex` / `pdflatex`、`bibtex` 和 `synctex`。缺少依赖时说明缺项，不自动安装 TeX 环境或更改全局设置。前端资源已随插件附带，无需 npm、pip 或 Poppler 安装。PDF 页尺寸与文字位置由自带 PDF.js 读取，服务端只调用本地 TeX / SyncTeX。macOS 优先使用 PATH 中的 TeX，找不到时检查 `/Library/TeX/texbin`，不修改全局 PATH。Windows / Linux 的系统文件选择器使用可选的 tkinter；缺少时仍可通过启动命令打开文稿。macOS 使用系统原生文件选择器。
+
+用户要求安装时，在仓库根目录执行：
+
+```sh
+codex plugin marketplace add .
+codex plugin add latex-codex@latex-codex-shared
+```
+
+Windows 中 CLI 不在 PATH 时，优先使用当前桌面应用提供的 CLI：
+
+```powershell
+& $env:CODEX_CLI_PATH plugin marketplace add .
+& $env:CODEX_CLI_PATH plugin add latex-codex@latex-codex-shared
+```
+
+安装后让用户新开对话，使用 latex-codex 打开指定的 `.tex` 文件。保持仓库目录可用，作为本地插件源。当前版本已在 Windows 验证；macOS 路径查找和文件选择器有模拟检查，仍需真机验证。迁移时复制仓库并在新电脑重新注册本地市场和安装插件，文稿相对依赖及 `.latex-codex/` 历史随项目目录一起复制。
+
+安装机制参见 [官方文档](https://developers.openai.com/plugins/build/plugins#install-a-local-plugin-manually)。
+
+## 启动与数据
+
+### 自动地址、端口与源码发布
+
+启动参数 `--host auto --port auto` 自动选择本机私有 IPv4 地址并绑定可用端口，先尝试应用默认端口 8765，被占用时由系统分配空闲端口；实际地址以启动输出和邀请链接为准。省略 `--host` 仍只监听回环地址；明确指定 IP 或数字端口时不会自动改用其他地址或端口。多个网卡、VPN 环境下可手动指定所需 LAN IP。协作者的本机 IP 不影响服务器监听，直接访问邀请即可。内网穿透应映射实际监听端口，公网地址仍由 `--public-url` 明确提供，不能自动推断。
+
+发布源码优先生成干净的源码包：`python plugins/latex-codex/scripts/package_source.py --output /path/to/latex-codex-source.zip`。包内只含插件源码、市场配置和必要文档，排除论文、PDF、演示媒体、历史数据库、缓存、环境文件和凭据。`.gitignore` 不能移除已经提交过的内容；已有 Git 历史需另行检查。项目目录内的普通文件对协作者可见，必须选择专用项目根目录；协作 Markdown 资源不得扩展到项目外的 Obsidian 库。隐藏源码不自动记录到共享历史，旧隐藏路径的历史条目不返回协作页面。网页路径限制不等于 TeX 编译隔离：本地 TeX 没有操作系统沙箱，受信任的可编辑协作者仍可通过恶意 TeX 尝试读取系统文件。
+
+### Codex 使用权限
+
+在“协作”的成员列表中，项目所有者可逐人点击“允许使用 Codex”或“撤销 Codex 权限”。所有新增和从旧版本迁移的协作者默认未授权；编辑权限不包含 Codex 权限，只读用户不能获授该权限。权限保存在项目协作数据库，每次请求均在后端核验，不能通过修改网页或请求数据绕过。撤销 Codex 权限或邀请会停止该成员尚在运行的请求；已消耗的额度不回退。模型列表、项目聊天和摘要调用同样受控。授权用户只能查询/停止自己发起的任务，所有者可管理所有任务。权限不会向浏览器提供本机 Codex 登录凭据；获得授权仍意味着使用所有者的 Codex 额度，目前不含逐人额度上限。
+
+### 中文阅读翻译
+
+预览工具栏的“中文翻译”默认关闭，开启后在 PDF / Markdown 右侧显示独立译文栏；开关按项目在浏览器保存。“跟随原文”可独立关闭，中文副本可下载。Markdown 通过源码段落位置对齐，PDF 通过当前页文字片段对齐；公式、图像或无法匹配的页面退回阅读进度同步，不保证逐句定位。
+
+首次开启翻译已有英文段落，之后在成功保存或编译后的轮询中检查变化，后台延迟两秒合并连续保存，只发送缺失的段落。每批最多 12 段、12000 字符，使用已登录 Codex CLI 的默认模型和 low 思考等级；不携带全文或主对话，不允许工具。中文段落、缓存与按当前顺序维护的 `<主文件名>.zh-CN.md` 保存在项目私有 `.latex-codex/translations/`；缓存按段落内容键复用，移动、删除、恢复及重启不会重新翻译未改变的内容。失败保留已完成译文和待翻译原文，关闭停止当前翻译但不清空缓存。中文阅读文件不覆盖原文，不属于正式 PDF；首次整篇翻译仍会消耗额度。
+
+新翻译及增量更新需要现有 Codex 授权，未授权协作者只读缓存译文，不能通过保存或直接 API 触发翻译。撤销权限或邀请停止该成员发起的翻译；所有者可停止任意翻译，其他获授权成员只能停止自己的任务。默认按固定主文件翻译，TeX 跟随项目内静态 `\\input` / `\\include`，不扩展动态宏、不读取外部路径或 `.bib`；Markdown 跳过 frontmatter、代码和参考文献的翻译。最多 100 万字符、2000 个段落，复杂 LaTeX 宏、特殊布局和长公式仍可能影响译文与定位。
+
+后端为 `translation.py` 和 `chat.py` 的独立翻译任务；前端为 `vendor/latex-translation.{mjs,css}`，检查在 `test_translation.py` / `.mjs`。项目路径前缀由统一入口处理。不要提交中文副本或翻译缓存；代理升级后保持正式文稿翻译关闭，除非用户明确要求立即翻译，验证使用短篇测试即可。
+
+### 统一项目入口
+
+多个协作项目需要同一个端口时使用 `gateway.py`，不要为每个文稿启动新的监听端口。同一进程按 `/p/<项目标识>/` 分发请求，各项目保留独立的协作数据库、文件边界、历史与 Codex 授权。例如：
+
+```sh
+python plugins/latex-codex/scripts/gateway.py --project /path/to/paper/main.tex --project /path/to/notes/draft.md --host auto --port auto --public-url https://editor.example.com --owner-name Owner
+```
+
+启动时打印私人主管理员链接，仅在监听地址的本地入口登录；公网 Host 不允许访问管理 API。主管理员可选择任意已登记项目，或填写本机文稿路径添加项目。管理链接使用 fragment 并在登录后移除，不要分享给协作者。管理会话只在服务内存保存，重启需使用新打印的管理链接。管理员进入项目后具有该项目所有者权限。
+
+协作者仍由各项目所有者生成每人独立的邀请，链接包含 `/p/<项目标识>/join#invite=...`，自动进入对应项目，不提供其他项目的列表。各项目使用独立名称及路径的 HttpOnly cookie，并核验登录 Host；一个项目的邀请、会话和 Codex 授权不能用于另一个项目。现有成员和授权保存在原项目数据库，重启保留；新增成员仍默认没有 Codex 权限。保持项目标识稳定，避免旧邀请链接失效。
+
+项目登记默认保存在用户目录 `.latex-codex/projects.json`，只记录项目标识、显示名称、主文件及根目录，不记录邀请或管理凭据。可通过 `--registry` 指定私有位置；不得提交该文件。一个根目录对应一个项目，不允许项目目录互相包含。已有统一入口时，代理通过管理页面添加文稿并打开对应项目，复用原监听端口；当前页面有未保存草稿或待处理建议时先按编辑器流程处理。
+
+迁移原单项目入口时，可使用 `--legacy-project <原项目标识>` 保留该项目旧的无前缀邀请与 API，旧会话仅用于指定项目，不授予主管理权限。内网穿透仍只映射固定端口，保留浏览器 Host，并配置准确的 `--public-url`；不信任转发头。后端在 `gateway.py` 和 `project_routes.py`，项目资源与 API URL 在响应时添加项目前缀，不改写源码或偏好中的提示词；检查为 `test_gateway.py`。
+
+### 多用户协作与项目文件
+
+通过 `--collaborate --owner-name "姓名"` 启用邀请登录、协作编辑和项目文件面板，可组合 `--host`、`--port`、`--public-url` 及 `--project-root`。例如：
+
+```sh
+python plugins/latex-codex/scripts/editor.py /path/to/main.tex --collaborate --owner-name Owner --host auto --port auto --public-url https://editor.example.com
+```
+
+终端打印项目所有者的私人邀请链接。以该链接登录后，在“协作”中填写姓名，生成每人独立的可编辑或只读邀请；链接由所有者自行交给本人，可随时撤销。请勿提交或记录真实邀请链接。邀请通过 URL fragment 进入浏览器，随即从地址移除；数据库只存邀请和会话的散列，会话使用 HttpOnly / SameSite cookie，HTTPS 登录加 Secure，并限制至登录时的 Host。HTTPS 穿透端须提供有效证书并保留 Host，仍沿用指定的 Host / Origin 白名单。重启轮换所有者邀请，已有协作者邀请及未过期登录保留。
+
+协作约每秒同步当前文件，按浏览器页面独立选择文件，主编译文件和项目根目录固定。非重叠编辑自动合并；同段编辑保留本地草稿，在“处理协作冲突”中明确合并后提交，提交期间若服务器再变动仍需重试。不采用最后写入覆盖；这不是完整的 CRDT。同步期间的新输入通过再次合并保留，源码颜色仅为编辑器覆盖层，悬停显示作者姓名，历史显示每次保存的作者，正式 PDF 不添加作者颜色。共享源码批注包含作者、颜色与引用文字，可定位、解决；原文已变化或重复时提示重新查找。作者颜色为有限调色板，姓名负责区分。
+
+协作模式默认手动 PDF 编译，编译期间其他同步请求会等待；项目所有者和可编辑协作者都可以编译固定主文件，生成的 PDF 向协作者共享，编译不需要 Codex 使用权限。只读协作者只能查看或下载已有 PDF。历史恢复和全局设置由所有者操作；Codex 使用由所有者逐人授权，默认拒绝；AI 不附带启动此服务的 Codex 主对话。只读邀请不能修改源码或批注。项目文件的上传、新建、重命名和删除由所有者操作，所有协作者可下载，编辑邀请可修改已有 UTF-8 `.tex/.md/.markdown/.bib/.sty/.cls/.txt/.csv/.json` 文件。支持多文件上传、单文件下载和项目 ZIP；单文件上传 16 MiB、项目上传及 ZIP 128 MiB。拒绝目录越界、隐藏目录、符号链接、Windows 特殊路径；禁止删除或重命名主文件及在线页面正在编辑的文件，替换、重命名及删除校验当前版本。删除文件移入 `.latex-codex/trash/`，可在磁盘手动恢复，文件夹仅允许删除空目录；ZIP 不含隐藏历史或回收区。重命名不会自动修改 LaTeX 引用，也不迁移旧路径的历史/批注。
+
+此模式认证的是受信任的合作者，不提供操作系统级 TeX 沙箱：项目所有者或可编辑协作者编译 TeX 时，本地 TeX 仍可读取系统文件。项目目录不应包含希望对协作者保密的文件；协作者可读取该目录内非隐藏文件和项目历史。原有不带 `--collaborate` 的单用户模式保持原行为，不能作为已认证的公网服务使用。
+
+后端在 `scripts/collaboration.py`、`project_files.py` 与 `editor.py`，前端在 `vendor/latex-collaboration.{mjs,css}` 和 `latex-project-files.mjs`；检查为 `test_collaboration.py`、`test_collaboration.mjs` 及现有 `test_ui.cjs` / 历史检查。协作数据库 `.latex-codex/collaboration.sqlite3` 与历史同为项目私有数据，不随插件提交。
+
+独立启动编辑器：
+
+```sh
+python plugins/latex-codex/scripts/editor.py /path/to/main.tex
+# 指定本机已有的局域网 IP 和固定端口
+python plugins/latex-codex/scripts/editor.py /path/to/main.tex --host auto --port auto
+# 穿透服务保留公网 Host 时，显式允许该入口（区分 HTTP / HTTPS）
+python plugins/latex-codex/scripts/editor.py /path/to/main.tex --host auto --port auto --public-url https://editor.example.com
+# 主文件和附录分布在不同子目录时，指定共同的项目根目录
+python plugins/latex-codex/scripts/editor.py /path/to/project/paper/main.tex --project-root /path/to/project
+# macOS / Linux 通常使用 python3
+```
+
+同一启动命令也支持 UTF-8 `.md` / `.markdown`；默认在浏览器本地实时预览，不调用 TeX。支持常用 Markdown、代码块、表格、KaTeX 公式及 Obsidian `![[图片名.png]]` 引用；图片限于笔记目录或其 Obsidian 库内，实时预览允许 PNG/JPG/GIF/WebP/AVIF。点击“PDF 预览”使用本地 XeLaTeX，将笔记转换为行号对应的临时 TeX，跳过 YAML frontmatter，渲染 callout、双链显示文本和 TikZ 代码块，沿用 PDF 目录、SyncTeX 双向跳转、选字/框选批注、下载及历史 PDF 对比；点击“实时预览”切回 HTML。PDF 图片支持 PNG/JPG/PDF，其他格式显示提示；TikZ 需现有 TeX 环境提供相应包，缺少时不自动安装。打开和编译保留原笔记字节，转换文件和图片副本仅在构建目录中生成。自动保存、Vim/Emacs、搜索、源码批注、AI 修改和历史沿用现有流程；Markdown AI 修改不插入 TeX 颜色命令。HTML 渲染与定位在 `scripts/vendor/latex-markdown.{mjs,css}`，资源边界在 `scripts/markdown_source.py`；PDF 转换在 `scripts/obsidian_tex.py`，适配自用户提供的 LaTeX Sidecar 16.22.00。检查在 `test_markdown.py`、`test_markdown.mjs`、`test_markdown_pdf.py`、`test_highlight.cjs` 和 `test_ui.cjs`。
+
+打开终端打印的地址；默认仅监听 `127.0.0.1`，显式传入 `--host` 时监听指定 IP，并按该地址校验 Host / Origin。`--public-url` 可重复添加允许的 HTTP / HTTPS 入口（仅域名及端口，不带路径），保留监听地址访问；代理应保留浏览器原始 Host，Origin 必须匹配该 Host 对应的已配置入口，不信任转发头自动放行。此选项不增加登录验证或自动配置防火墙、内网穿透。AI 功能使用已登录的 Codex CLI。完整操作说明见 `plugins/latex-codex/skills/latex-codex/SKILL.md`。
+
+编辑会自动保存到当前源码文件；主编译文件保持固定。默认项目根目录是主文件所在目录，可在“文件 → 项目设置”或启动参数 `--project-root` 中指定包含正文和附录的共同目录。TeX 的相对引用仍从主文件所在目录解析。源码文件选择器和 PDF 反向跳转可打开项目内的 `\input` / `\include` 文件；历史与对话统一保存在项目根目录的 `.latex-codex/history.sqlite3`，源码历史保留项目相对路径，历史面板按时间统一显示主文件与所有子文件的记录；每条记录显示文件名，对比和恢复使用该记录所属的文件。项目内所有 UTF-8 `.tex` / `.md` / `.markdown` 源码在启动及状态轮询时记录，未打开的子文件修改也会被捕获。仅在查看历史“PDF 改动”时，将每处修改前后的 PNG 对比图（包含整句标红）存入 `.latex-codex/pdf-diff-cache/`；普通编译不保存完整 PDF 或 SyncTeX 存档。再次查看直接读图，缺失或损坏时按需编译生成；“重新编译”强制更新这一组对比图。跨页改动按页保存，新增或删除的一侧显示空白说明。缓存可删除，每项目上限 256 MiB，30 天未使用的存档在缓存读写时清理；源码历史不受影响。失败编译或未完成的渲染不覆盖已有对比图。旧版 `.latex-codex/pdf-cache/` 已停用，可删除。永久历史在同一项目数据库中记录各源码文件；子文件的历史 PDF 通过临时源码覆盖编译主文件，使用其余依赖的当前版本。切换源码前保存当前修改；未发送的批注或正在生成的回复需先处理。PDF 选区不可一次跨越多个源码文件。当前不支持 Biber。
+
+## 维护
+
+Windows 的 TeX / BibTeX 编译、引擎和包探测及 SyncTeX 查询均通过 `CREATE_NO_WINDOW` 后台运行，保留编译日志与超时处理；新增非交互子进程时沿用这一设置。macOS / Linux 不设置 Windows 创建标志。
+
+顶部“AI 批注 · 数量”始终显示，包括零条、待发送及已生成建议的状态；点击查看列表，再点击单条批注编辑或删除，顶部 Send 发送尚未生成建议的批注。该入口与不调用 AI 的协作“注释”面板不同。升级前先检查页面是否有未发送批注、草稿或建议，不得为刷新前端而丢弃它们。入口及检查在 `vendor/latex-chat.mjs` 与 `test_chat_ui.mjs`。
+
+独立文字注释不调用 AI。源码、PDF 文字选区及 Markdown 实时预览可右键“添加文字注释”；实时预览图片/表格按包含对象的源码块建立锚点，PDF 图片应在对应源码注释。顶部“注释”面板按当前文件显示讨论、作者、引用和回复；编辑协作者无需 Codex 授权即可评论/回复，只读协作者只查看。作者或所有者可解决/重新打开注释；已解决的讨论保留并可显示。版本及页面路径核验防止串文件，轮询保留未发布的注释/回复草稿，定位优先原字符位置、否则只匹配唯一引用，不猜测变化后的重复内容。讨论使用项目协作数据库的 `comments` / `comment_replies`，不会插入论文源码。实现为 `vendor/latex-text-comments.mjs`、`latex-collaboration.mjs`、`latex-markdown.mjs` 及 `collaboration.py` / `editor.py`，检查为 `test_collaboration.py` / `.mjs` 和 `test_ui.cjs`。
+
+Markdown 实时预览支持拖选正文后右键“添加批注”，映射当前预览对应的源码选区并复用既有批注框、草稿保护和 Codex 权限。格式边界保留完整 Markdown；重复或无法准确匹配的文字、图片和公式选区要求缩小选区或在源码添加批注，不猜测位置。此模式采用浏览器文字拖选，不提供 PDF 的矩形框选。实现及检查在 `vendor/latex-markdown.{mjs,css}` 与 `test_markdown.mjs`。
+
+临时批注框工具栏的“Style”按钮位于思考等级后，未选风格为灰色，已选高亮；收起时只显示 Style，不展示名称，不另开对话框。点击原生下拉菜单选择“无”、预设或导入提示词。预设提供用户给定的 Tao Compact / Shelah Compact 中英文提示词，可导入 UTF-8 `.txt` / `.md`（最大 64 KiB、12000 字符）。预设及拼接逻辑在 `scripts/vendor/latex-writing-styles.mjs`，仅作为当前批注的提示词数据，不安装或执行技能。Style 选择（含导入提示词）自动存入用户全局偏好，新批注、刷新页面和切换文稿继续沿用，选择“无”清除默认风格。每条批注保存自己的风格快照；批量发送按各自快照把风格合入 `annotation.request`，当前修改要求优先。确认修改的历史保留实际发送的完整要求。仅当前默认导入项随全局偏好保存，其余导入项仍只保留在当前页面；检查覆盖 `test_chat_ui.mjs` 与 `test_preferences.py`。
+
+PDF 的“选字”模式支持空格临时拖动；同时按住空格与 Alt，再按住左键向右下拖动可连续放大，向左上拖动可连续缩小，范围为 30%–500%。按下鼠标的位置作为缩放中心；每帧合并指针移动，通过 PDF.js 延迟栅格渲染保持拖动流畅，松开后立即补清晰渲染。松开任一快捷键、取消拖动、失焦、切换模式或替换 PDF 均结束手势，不触发框选批注或源码定位。检查覆盖 `test_ui.cjs`。
+
+源码的 Ctrl+F / macOS Cmd+F 打开搜索替换面板，支持大小写、正则、整词与仅选区搜索，Enter / Shift+Enter 浏览匹配，Esc 关闭。默认不区分大小写、按普通文本搜索；选项按钮高亮表示开启，再次点击关闭，大小写与正则按钮的提示显示当前状态。替换通过 CodeMirror 的正常编辑与自动保存流程执行；全部替换为一次可撤销操作。实现位于 `plugins/latex-codex/scripts/vendor/latex-search.{mjs,css}`，检查覆盖 `test_search.mjs` 与 `test_ui.cjs`。PDF 右侧滚动手柄显示当前物理页码和总页数，默认宽度 26 px，较长页数自动撑开；无章节目录时仍保留页码与滚动，PDF 关闭时清除，检查覆盖 `test_outline.mjs`。
+
+PDF 的“选字”模式保留文字上的原生拖选；从页面空白处按下左键拖动时，在起始页内框选文字或公式。框选按 PDF.js 字符几何位置判断，松开后才按页读取并缓存字符数据，拖动过程不调用 SyncTeX。右键“添加批注”沿用现有源码定位；公式优先核实编译位置并选中完整公式环境，行内公式也保留完整源码边界。框选正文要求明确匹配，不用编辑距离猜测被矩形漏掉的文字；无法匹配时扩大选框或在源码选择。Esc、切换拖动模式、缩放或替换 PDF 会清除框选。检查覆盖 `test_pdf_selection.mjs` 与 `test_ui.cjs`。历史 PDF 标红按完整句子展开，Markdown 同时以源码段落和标题为边界，跨图片后的下一段不并入前句；中文句号保留独立句子，换行造成的 PDF 文字片段拆合不算内容修改，正文页码不参与 Markdown 句子对比。检查覆盖 `test_history_pdf.py` 与 `test_markdown_pdf.py`。
+
+PDF 正文定位识别主文件中直接声明的 `\newtheorem`（含星号及共享计数器）和 `proof`，将自动标题、编号、纯文本可选标题和证毕方块与对应源码边界核对。完整环境选区保留配对的 `\begin` / `\end`，部分正文保持精确范围；跨环境的部分选区、漏选正文和歧义匹配拒绝定位。宏生成标题、外部包定义的自定义环境及非标准标题布局仍需源码选择。实现与检查在 `editor.py`、`test_ui.cjs`。
+
+设置中的“项目修改校对（主对话 / 外部修改）”默认关闭，开启后跟踪项目内 `.tex`（含子文件）的文件修改；手动输入及已 Keep 的插件建议正常保存，不重复校对。差异基线保存在项目历史数据库的独立表，刷新或重启不丢待确认修改；关闭开关仅隐藏，不自动接受。顶部“项目校对”列表定位文件，源码及临时 PDF 沿用各自 Proofread 开关与逐处 Keep / Undo。主对话 / 外部工具已经写入磁盘后才捕获差异，Keep 确认当前内容，Undo 校验最新文件与基线后撤销该处；不能在 Codex 文件工具写入前拦截。不覆盖未保存草稿；重叠的新修改需刷新校对。纯删除也保留可操作的标记，历史不保存临时红绿 PDF。主对话代理修改时先检查运行服务的 `/project-review`，启用时通过同源 POST `/project-review` 提交 `{action:"propose",path,version,source}`，使用最新文件版本，保留手动编辑与现有批注；该 API 会写入真实文件并保留校对基线。实现与检查在 `project_review.py`、`vendor/latex-project-review.mjs`、`test_project_review.py` 和 `test_project_review.mjs`。
+
+用户界面偏好保存在用户目录的 `.latex-codex/preferences.sqlite3`，跨文稿和服务端口共享，包括语言、编辑模式、源码字号、目录样式、配色与自定义配色、修改标记色、修订色、自动编译、框选后自动弹出 PDF 批注对话框、默认写作风格（含导入提示词）和分栏比例。设置即时应用并自动保存，设置菜单的“保存设置”确认写入；失败显示提示并保留待保存值。浏览器 localStorage 只作兼容缓存，首次使用优先沿用当前地址下的旧偏好。设置库不随插件分发或提交。
+
+历史胶囊标签的 React / TypeScript 源码在 `plugins/latex-codex/frontend/`，使用 Tailwind CSS 与 shadcn 风格的 Radix Tabs。组件统一放在 `frontend/components/ui/`；`@/components/ui` 别名和 `components.json` 都指向这里，避免组件导入与 shadcn CLI 生成路径不一致。样式入口为 `frontend/styles.css`。
+
+维护时在该目录执行 `npm ci`、`npm run build`（包含 TypeScript 检查）；生成的 `scripts/vendor/history-tabs.{mjs,css}` 和许可证文件随插件一起分发，使用者不需要 Node。需要新增 shadcn 组件时可在该目录执行 `npx shadcn@latest add <组件名>`，保留现有适配。npm 依赖与锁文件保留在源码中，不分发 `node_modules`。
+
+本地 AI 批注通过 Send 生成建议后，每处在源码编辑区显示红色原文、绿色修改和独立的 Keep / Undo。预览不改源码；Keep 先保存准确的当前草稿及该处修改，再以一次可撤销操作应用，Undo 只撤销该处建议并保留原文。其他编辑和待校对标记继续保留，后续 Send 只发送尚未生成建议的批注。每处 Keep 作为独立历史检查点，包含原选区、修改要求、源码行号和 AI 回复；无需修改的回答按批次记录。保存失败保留源码和建议；带唯一请求编号的批注保存可安全重试，普通保存不重试。未处理的建议沿用批注的关闭、切换与外部冲突保护。批注和校对预览不写入 `.tex` / Markdown 源码，旧对话不回填批注关联。实现为 `scripts/vendor/latex-proofread.{mjs,css}` 与 `latex-chat.mjs`，检查覆盖 `test_proofread.mjs`、`test_chat_ui.mjs` 和 `test_chat.py`。
+
+设置提供独立的“编辑器校对（Proofread）”与“PDF 校对（Proofread）”开关，均默认开启，偏好跨项目保存。关闭编辑器校对时，待处理建议移至批注列表；关闭 PDF 校对时恢复正式 PDF，并忽略未完成预览请求的结果。两者都关闭后，新 Send 修改走原有直接保存应用流程；切换开关不自动接受或丢弃已生成建议。Markdown 仅使用编辑器校对开关，PDF 校对开关不启用其临时 PDF 编译。检查覆盖 `test_settings.mjs`、`test_preferences.py`、`test_proofread.mjs`、`test_proofread_pdf.mjs`、`test_chat_ui.mjs`。
+
+LaTeX 批注建议同时生成临时 PDF 校对预览：原选区全文标红，建议全文标绿，PDF 页边的每处 Keep / Undo 与源码校对卡片共享操作。`/proofread` 在独立临时目录覆盖当前草稿并编译主文件（含子文件相对依赖）；不写真实源码、历史版本、历史 PDF 缓存，也不覆盖正式 PDF / SyncTeX。临时 PDF 仅在服务内存保留最近两份，临时源码和构建文件立即清理；普通 PDF 下载仍导出正式文稿。预览期间停用正式源码定位，处理完建议恢复正常 PDF；失败保留原 PDF 和建议。Keep 沿用正式保存及历史检查点流程，Undo 不新增历史。实现为 `scripts/proofread.py`、`vendor/latex-proofread-pdf.mjs` 和现有编译适配；检查覆盖 `test_proofread_pdf.py` / `.mjs`，共享的临时源码编译沿用 `test_history_pdf.py`。
+
+历史活动流统一显示整个项目的记录，按每条记录所属源码文件的章节定位改动，同一文件的五分钟保存组与对比基线保持独立。恢复另一文件前保存当前编辑草稿，并校验当前文件与目标文件的版本。鼠标移入记录栏时，使用已登录的 Codex CLI 在后台概括尚未缓存的记录，每批最多 12 个；摘要跟随界面语言，按版本、对比基线和语言分别存入现有历史数据库，不进入项目问答。旧版摘要保留为简体中文缓存，切换语言会取消旧请求并复用或生成对应语言的摘要。摘要失败仍显示本地章节位置，关闭历史会取消未完成请求。
+
+第三方资源许可证必须保留，来源和版本见 `plugins/latex-codex/scripts/vendor/README.md`。PDF.js 主程序、worker、viewer 和配套资源需一起更新。当前 API / worker 含两处本地扩展：暴露原始 MediaBox，并支持按 glyph 读取精确文字位置；更新上游时保留这些扩展和 `test_history_pdf.py` / `test_editor.py` 的裁切、跨页检查。Node 仅用于维护测试的 PDF.js runner，插件运行时无需 Node。
+
+Python 检查位于 `plugins/latex-codex/scripts/test_*.py`，前端检查位于同目录的 `test_*.cjs` 和 `test_*.mjs`。按变更选择现有检查；文档修改只需核对内容、路径和 `git diff --check`。

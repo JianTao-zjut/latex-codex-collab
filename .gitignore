@@ -1,0 +1,34 @@
+# Local papers, experiments and shared archives
+/experiments/
+/share/
+/docs/media/
+/Design/assets/
+
+# Credentials and document history
+autoDL.txt
+.env
+.env.*
+!.env.example
+.latex-codex/
+auth.json
+projects.json
+*.sqlite3
+*.sqlite3-*
+*.db
+*.zip
+*.tex
+*.pdf
+node_modules/
+
+# Python and TeX build products
+__pycache__/
+*.py[cod]
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+.DS_Store
+Thumbs.db
