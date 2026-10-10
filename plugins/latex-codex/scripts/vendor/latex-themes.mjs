@@ -1,4 +1,5 @@
 import {t, setText, preferences} from './latex-settings.mjs';
+import {randomUUID} from './latex-uuid.mjs';
 
 const key='latex-codex-custom-themes';
 const roles=['bg','panel','border','text','muted','math','operator','reference','command','environment','number','environment-command','quick-accent'];
@@ -143,7 +144,7 @@ export function initScreenshotThemes(select,apply) {
   name.oninput=()=>setText(save,customThemes.some(item=>item.name===name.value.trim())?'更新并使用':'保存并使用');
   save.onclick=()=>{
     const label=name.value.trim();if(!label){setText(status,'请输入主题名称。');name.focus();return;}
-    const existing=customThemes.find(item=>item.name===label),item={id:existing?.id||'custom-'+crypto.randomUUID(),name:label,colors:draft,palette,distribution};
+    const existing=customThemes.find(item=>item.name===label),item={id:existing?.id||'custom-'+randomUUID(),name:label,colors:draft,palette,distribution};
     const next=customThemes.filter(theme=>theme.id!==item.id).concat(item);
     try{preferences.setItem(key,JSON.stringify(next));}catch{setText(status,'无法保存主题，请检查浏览器存储空间。');return;}
     customThemes=next;if(!existing)addOption(item);select.value=item.id;apply();dialog.close();

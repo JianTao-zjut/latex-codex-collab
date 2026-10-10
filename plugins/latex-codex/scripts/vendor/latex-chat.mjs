@@ -1,4 +1,5 @@
 import {t, preferences} from './latex-settings.mjs';
+import {randomUUID} from './latex-uuid.mjs';
 import {attachProofread} from './latex-proofread.mjs';
 import {writingStyles, readWritingStyle, restoreWritingStyle, annotationRequest} from './latex-writing-styles.mjs';
 
@@ -507,7 +508,7 @@ export function attachSelectionChat(editor, request, paintAnnotations = () => {}
           end:Array.from(source.slice(0,editor.indexFromPos(pos.to))).length, selection:item.original, request:annotationRequest(item)};
       });
       const started = await request('/chat', {method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({source,selection,messages:conversation,remember:true,memory_revision:memoryRevision,model:modelSelect.value,effort:effortSelect.value,request_id:crypto.randomUUID().replaceAll('-',''),...(items ? {annotations:items} : {})})});
+        body:JSON.stringify({source,selection,messages:conversation,remember:true,memory_revision:memoryRevision,model:modelSelect.value,effort:effortSelect.value,request_id:randomUUID().replaceAll('-',''),...(items ? {annotations:items} : {})})});
       if (token !== generation) {
         await request('/chat/cancel', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:started.id})}); return;
       }
@@ -579,7 +580,7 @@ export function attachSelectionChat(editor, request, paintAnnotations = () => {}
     const before = editor.getValue();
     let after = before;
     for (const edit of edits) if (edit.replacement !== null) after = after.slice(0,edit.start) + edit.replacement + after.slice(edit.end);
-    const change = {id:crypto.randomUUID().replaceAll('-',''), before, reply,
+    const change = {id:randomUUID().replaceAll('-',''), before, reply,
       items:[...edits].reverse().map(({item,start,end,replacement}) => ({id:item.id,
         start:Array.from(before.slice(0,start)).length, end:Array.from(before.slice(0,end)).length,
         selection:item.original, request:annotationRequest(item), replacement}))};

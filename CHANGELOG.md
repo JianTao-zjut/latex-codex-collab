@@ -1,5 +1,9 @@
 # Changelog / 更新日志
 
+## 0.6.6 — 2026-10-10
+
+- Fix UUID generation on LAN HTTP pages for chat requests, accepting suggestions, history and custom themes; use Web Crypto random bytes when native randomUUID is unavailable.
+
 ## 0.6.5 — 2026-10-10
 
 - Run Windows TeX compilation, BibTeX, package discovery and SyncTeX queries without creating console windows; retain captured logs and existing timeout handling.

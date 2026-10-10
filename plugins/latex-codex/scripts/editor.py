@@ -49,7 +49,7 @@ ASSETS.update({'history-tabs.mjs':'text/javascript','history-tabs.css':'text/css
 ASSETS.update({'latex-proofread.mjs':'text/javascript','latex-proofread.css':'text/css','latex-project-review.mjs':'text/javascript'})
 ASSETS.update({'latex-proofread-pdf.mjs':'text/javascript','latex-writing-styles.mjs':'text/javascript'})
 ASSETS.update({'latex-collaboration.mjs':'text/javascript','latex-collaboration.css':'text/css','latex-project-files.mjs':'text/javascript','latex-text-comments.mjs':'text/javascript'})
-ASSETS.update({'latex-translation.mjs':'text/javascript','latex-translation.css':'text/css'})
+ASSETS.update({'latex-translation.mjs':'text/javascript','latex-translation.css':'text/css','latex-uuid.mjs':'text/javascript'})
 ASSETS.update({'latex-outline.mjs':'text/javascript','latex-outline.css':'text/css','latex-zoom.mjs':'text/javascript','latex-zoom.css':'text/css','latex-search.mjs':'text/javascript','latex-search.css':'text/css'})
 ASSETS.update({name: 'text/css' if name.endswith('.css') else 'text/javascript' for name in
                ('latex-markdown.mjs', 'latex-markdown.css', 'marked.mjs', 'purify.mjs', 'markdown.js', 'gfm.js', 'xml.js', 'overlay.js', 'multiplex.js', 'latex-markdown.js')})

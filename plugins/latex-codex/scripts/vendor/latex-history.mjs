@@ -1,4 +1,5 @@
 import {t, language} from './latex-settings.mjs';
+import {randomUUID} from './latex-uuid.mjs';
 import {analyzePdf} from './latex-pdf-analysis.mjs';
 
 export function pdfChangeCard(index) {
@@ -124,7 +125,7 @@ export function attachHistory(editor, request, getState, restore) {
   }
   async function renderPdf(recompile = false) {
     const ticket = pdfSerial;
-    const pending = {id:crypto.randomUUID(), path:context.path, controller:new AbortController()};
+    const pending = {id:randomUUID(), path:context.path, controller:new AbortController()};
     pdfRequest = pending;
     const selection = {id:selected, ...comparison()};
     $('recompile').disabled = true;
